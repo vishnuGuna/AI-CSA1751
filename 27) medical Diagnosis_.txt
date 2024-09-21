@@ -1,0 +1,22 @@
+% Facts: Define symptoms associated with diseases
+disease(flu, [fever, cough, sore_throat, fatigue]).
+disease(cold, [cough, runny_nose, sore_throat]).
+disease(allergy, [sneezing, runny_nose, itchy_eyes]).
+disease(pneumonia, [fever, cough, difficulty_breathing]).
+disease(strep_throat, [sore_throat, fever, headache]).
+disease(migraine, [headache, nausea, sensitivity_to_light]).
+
+% Rule: Diagnose based on symptoms
+diagnose(Disease) :-
+    findall(Symptom, symptom(Symptom), Symptoms),
+    disease(Disease, DiseaseSymptoms),
+    subset(DiseaseSymptoms, Symptoms).
+
+% Rule: Collect symptoms from the user
+symptom(Symptom) :-
+    write('Do you have the symptom: '), write(Symptom), write('? (yes/no) '),
+    read(Response),
+    (Response == yes -> true; fail).
+
+% Example Query: To start the diagnosis
+% ?- diagnose(Disease).

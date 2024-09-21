@@ -1,0 +1,72 @@
+% Facts: Define the family members and their relationships
+% Parent relationships
+parent(john, mary).    % John is a parent of Mary
+parent(john, james).   % John is a parent of James
+parent(susan, mary).   % Susan is a parent of Mary
+parent(susan, james).  % Susan is a parent of James
+parent(mary, alice).   % Mary is a parent of Alice
+parent(mary, bob).     % Mary is a parent of Bob
+parent(peter, alice).  % Peter is a parent of Alice
+parent(peter, bob).    % Peter is a parent of Bob
+% Gender (optional but useful for some relationships)
+male(john).
+male(james).
+male(peter).
+male(bob).
+female(susan).
+female(mary).
+female(alice).
+% Rules: Define relationships
+% Father: X is the father of Y if X is a parent of Y and X is male
+father(X, Y) :-
+    parent(X, Y),
+    male(X).
+% Mother: X is the mother of Y if X is a parent of Y and X is female
+mother(X, Y) :-
+    parent(X, Y),
+    female(X).
+% Sibling: X and Y are siblings if they share at least one parent
+sibling(X, Y) :-
+    parent(Z, X),
+    parent(Z, Y),
+    X \= Y.
+% Grandparent: X is a grandparent of Y if X is a parent of Z and Z is a parent of Y
+grandparent(X, Y) :-
+    parent(X, Z),
+    parent(Z, Y).
+% Grandfather: X is the grandfather of Y if X is a grandparent and male
+grandfather(X, Y) :-
+    grandparent(X, Y),
+    male(X).
+% Grandmother: X is the grandmother of Y if X is a grandparent and female
+grandmother(X, Y) :-
+    grandparent(X, Y),
+    female(X).
+% Ancestor: X is an ancestor of Y if X is a parent of Y or X is a parent of Z and Z is an ancestor of Y
+ancestor(X, Y) :-
+    parent(X, Y).
+ancestor(X, Y) :-
+    parent(X, Z),
+    ancestor(Z, Y).
+% Uncle: X is the uncle of Y if X is male and the sibling of Y's parent
+uncle(X, Y) :-
+    male(X),
+    sibling(X, Z),
+    parent(Z, Y).
+% Aunt: X is the aunt of Y if X is female and the sibling of Y's parent
+aunt(X, Y) :-
+    female(X),
+    sibling(X, Z),
+    parent(Z, Y).
+% Cousin: X and Y are cousins if X's parent is the sibling of Y's parent
+cousin(X, Y) :-
+    parent(A, X),
+    parent(B, Y),
+    sibling(A, B).
+% Example Queries:
+% ?- father(john, mary).         % Check if John is the father of Mary
+% ?- mother(mary, bob).          % Check if Mary is the mother of Bob
+% ?- grandparent(john, alice).   % Check if John is the grandparent of Alice
+% ?- ancestor(john, alice).      % Check if John is an ancestor of Alice
+% ?- uncle(james, alice).        % Check if James is the uncle of Alice
+% ?- cousin(bob, james).         % Check if Bob and James are cousins

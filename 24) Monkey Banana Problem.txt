@@ -1,0 +1,40 @@
+% Initial state: 
+% monkey is on the ground, box is on the ground, bananas are hanging.
+
+state(ground, ground, hanging). % state(Monkey Position, Box Position, Banana Status)
+
+% Possible actions
+% Move the monkey to a different position
+action(move(MonkeyNewPosition), state(MonkeyCurrentPosition, BoxPosition, BananaStatus), state(MonkeyNewPosition, BoxPosition, BananaStatus)) :-
+    monkey_can_move(MonkeyCurrentPosition, MonkeyNewPosition).
+
+% Climb the box
+action(climb, state(ground, on_box, BananaStatus), state(on_box, on_box, BananaStatus)).
+
+% Push the box
+action(push, state(MonkeyPosition, BoxCurrentPosition, BananaStatus), state(MonkeyPosition, BoxNewPosition, BananaStatus)) :-
+    box_can_move(BoxCurrentPosition, BoxNewPosition).
+
+% Take the bananas if the monkey is on the box
+action(take, state(on_box, BoxPosition, hanging), state(on_box, BoxPosition, taken)).
+
+% Define movement capabilities
+monkey_can_move(ground, tree).
+monkey_can_move(tree, ground).
+monkey_can_move(ground, box).
+
+% Define box movement capabilities
+box_can_move(ground, under_banana).
+box_can_move(under_banana, ground).
+
+% Goal state: The bananas are taken
+goal(state(_, _, taken)).
+
+% Plan to reach the goal state
+plan(State, []) :- goal(State).
+plan(State, [Action|Rest]) :-
+    action(Action, State, NewState),
+    plan(NewState, Rest).
+
+% Example Query: Find a plan to get the bananas
+% ?- plan(state(ground, ground, hanging), Actions).

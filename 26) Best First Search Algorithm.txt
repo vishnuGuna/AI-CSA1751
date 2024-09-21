@@ -1,0 +1,46 @@
+% Facts: Define the graph connections and their costs
+edge(a, b, 1).  % cost to go from a to b is 1
+edge(a, c, 4).  % cost to go from a to c is 4
+edge(b, d, 2).  % cost to go from b to d is 2
+edge(b, e, 5).  % cost to go from b to e is 5
+edge(c, e, 1).  % cost to go from c to e is 1
+edge(d, g, 3).  % cost to go from d to g is 3
+edge(e, g, 2).  % cost to go from e to g is 2
+
+% Define the heuristic function for the nodes (estimates cost to goal)
+heuristic(a, 7).
+heuristic(b, 6).
+heuristic(c, 4).
+heuristic(d, 3).
+heuristic(e, 2).
+heuristic(g, 0).
+
+% Best First Search Algorithm
+best_first_search(Start, Goal, Path, Cost) :-
+    best_first([[Start]], Goal, Path, Cost).
+
+best_first([[Goal | Path] | _], Goal, [Goal | Path], 0).
+best_first([CurrentPath | OtherPaths], Goal, FinalPath, TotalCost) :-
+    CurrentPath = [Current | _],
+    findall([Next, Current | CurrentPath],
+            (edge(Current, Next, StepCost), \+ member(Next, CurrentPath), 
+             heuristic(Next, H), F is StepCost + H),
+            NewPaths),
+    append(OtherPaths, NewPaths, PathsWithCosts),
+    sort_paths(PathsWithCosts, SortedPaths),
+    best_first(SortedPaths, Goal, FinalPath, Cost),
+    TotalCost is Cost + StepCost.
+
+% Sorting paths based on the estimated cost (F)
+sort_paths(Paths, Sorted) :-
+    map_list_to_pairs(path_cost, Paths, Pairs),
+    keysort(Pairs, SortedPairs),
+    pairs_values(SortedPairs, Sorted).
+
+path_cost([Node, Path], F) :-
+    length(Path, Cost), % Length of the path is used as the cost
+    heuristic(Node, H),  % Get the heuristic cost
+    F is Cost + H.
+
+% Example Query: To find the best path from a to g
+% ?- best_first_search(a, g, Path, Cost).

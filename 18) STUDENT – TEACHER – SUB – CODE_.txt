@@ -1,0 +1,29 @@
+% Facts: student_teacher_subject_code(Student, Teacher, Subject, Code)
+student_teacher_subject_code(john, smith, mathematics, 'M101').
+student_teacher_subject_code(mary, smith, mathematics, 'M101').
+student_teacher_subject_code(alex, brown, physics, 'P201').
+student_teacher_subject_code(lisa, williams, chemistry, 'C301').
+student_teacher_subject_code(peter, taylor, biology, 'B401').
+student_teacher_subject_code(jane, taylor, biology, 'B401').
+% Rule to find the subject and code a student is enrolled in
+find_subject_and_code(Student, Subject, Code) :-
+    student_teacher_subject_code(Student, _, Subject, Code).
+% Rule to find the teacher of a specific student
+find_teacher(Student, Teacher) :-
+    student_teacher_subject_code(Student, Teacher, _, _).
+% Rule to find all students taught by a specific teacher
+students_of_teacher(Teacher, Student) :-
+    student_teacher_subject_code(Student, Teacher, _, _).
+% Rule to find students enrolled in a specific subject
+students_in_subject(Subject, Student) :-
+    student_teacher_subject_code(Student, _, Subject, _).
+% Rule to find the code of a subject taught by a teacher
+find_subject_code_by_teacher(Teacher, Subject, Code) :-
+    student_teacher_subject_code(_, Teacher, Subject, Code).
+OUTPUT:
+?- find_subject_and_code(john, Subject, Code).
+Subject = mathematics,
+Code = 'M101'.
+O/P – 2
+?- find_teacher(jane, Teacher).
+Teacher = taylor.

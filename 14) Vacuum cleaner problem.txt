@@ -1,0 +1,39 @@
+import random
+
+class VacuumCleaner:
+    def __init__(self, environment, start):
+        self.environment = environment
+        self.position = start
+        self.cleaned = 0
+
+    def clean(self):
+        if self.environment[self.position[0]][self.position[1]] == 1:
+            self.environment[self.position[0]][self.position[1]] = 0
+            self.cleaned += 1
+
+    def move(self):
+        directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        random.shuffle(directions)
+        for d in directions:
+            new_position = (self.position[0] + d[0], self.position[1] + d[1])
+            if 0 <= new_position[0] < len(self.environment) and 0 <= new_position[1] < len(self.environment[0]):
+                self.position = new_position
+                break
+
+def is_clean(environment):
+    return all(all(cell == 0 for cell in row) for row in environment)
+
+environment = [
+    [1, 0, 1],
+    [1, 1, 0],
+    [0, 1, 1]
+]
+
+vacuum = VacuumCleaner(environment, (0, 0))
+
+while not is_clean(environment):
+    vacuum.clean()
+    vacuum.move()
+
+print("All cells are clean!")
+print("Cleaned cells:", vacuum.cleaned)

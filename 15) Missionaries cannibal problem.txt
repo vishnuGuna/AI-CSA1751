@@ -1,0 +1,43 @@
+from collections import deque
+
+def is_valid(state):
+    m_left, c_left, boat, m_right, c_right = state
+    if m_left < 0 or m_right < 0 or c_left < 0 or c_right < 0:
+        return False
+    if (m_left > 0 and m_left < c_left) or (m_right > 0 and m_right < c_right):
+        return False
+    return True
+
+def get_successors(state):
+    successors = []
+    m_left, c_left, boat, m_right, c_right = state
+    moves = [(1, 0), (2, 0), (0, 1), (0, 2), (1, 1)]
+    for m, c in moves:
+        if boat == 1:
+            new_state = (m_left - m, c_left - c, 0, m_right + m, c_right + c)
+        else:
+            new_state = (m_left + m, c_left + c, 1, m_right - m, c_right - c)
+        if is_valid(new_state):
+            successors.append(new_state)
+    return successors
+
+def bfs(start_state, goal_state):
+    queue = deque([(start_state, [])])
+    visited = set()
+    visited.add(start_state)
+
+    while queue:
+        current_state, path = queue.popleft()
+        if current_state == goal_state:
+            return path
+
+        for successor in get_successors(current_state):
+            if successor not in visited:
+                visited.add(successor)
+                queue.append((successor, path + [successor]))
+
+start_state = (3, 3, 1, 0, 0)
+goal_state = (0, 0, 0, 3, 3)
+
+solution = bfs(start_state, goal_state)
+print("Solution:", solution)

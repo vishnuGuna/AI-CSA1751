@@ -1,0 +1,47 @@
+import math
+
+# Constants for infinity values
+MAX, MIN = math.inf, -math.inf
+
+# Alpha-Beta Pruning function
+def alpha_beta_pruning(depth, nodeIndex, isMaximizing, values, alpha, beta):
+    # Base case: when depth is maximum (reached leaf node)
+    if depth == 3:
+        return values[nodeIndex]
+
+    # Maximizing player
+    if isMaximizing:
+        maxEval = MIN
+        # Traverse two children
+        for i in range(2):
+            eval = alpha_beta_pruning(depth + 1, nodeIndex * 2 + i, False, values, alpha, beta)
+            maxEval = max(maxEval, eval)
+            alpha = max(alpha, eval)
+            if beta <= alpha:  # Prune remaining branches
+                break
+        return maxEval
+
+    # Minimizing player
+    else:
+        minEval = MAX
+        # Traverse two children
+        for i in range(2):
+            eval = alpha_beta_pruning(depth + 1, nodeIndex * 2 + i, True, values, alpha, beta)
+            minEval = min(minEval, eval)
+            beta = min(beta, eval)
+            if beta <= alpha:  # Prune remaining branches
+                break
+        return minEval
+
+# Values at the leaf nodes of the game tree
+values = [3, 5, 6, 9, 1, 2, 0, -1]
+
+# Alpha and Beta initialization
+alpha = MIN
+beta = MAX
+
+# Function call to start the Alpha-Beta pruning process
+optimal_value = alpha_beta_pruning(0, 0, True, values, alpha, beta)
+
+# Output the optimal value
+print("The optimal value is:", optimal_value)

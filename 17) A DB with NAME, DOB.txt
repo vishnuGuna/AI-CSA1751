@@ -1,0 +1,15 @@
+% Facts: name and date of birth (dob(Name, Day, Month, Year))
+dob(john, 12, may, 1990).
+dob(mary, 23, june, 1985).
+dob(alex, 4, january, 2000).
+dob(lisa, 15, september, 1992).
+dob(peter, 10, march, 1988).
+% Rule to find a person's name and DOB
+find_dob(Name, Day, Month, Year) :-
+    dob(Name, Day, Month, Year).
+% Rule to find all people born in a specific month
+born_in_month(Month, Name) :-
+    dob(Name, _, Month, _).
+% Rule to find all people born in a specific year
+born_in_year(Year, Name) :-
+    dob(Name, _, _, Year).

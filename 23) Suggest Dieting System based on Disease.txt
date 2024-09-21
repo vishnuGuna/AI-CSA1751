@@ -1,0 +1,40 @@
+% Facts: Disease and Recommended Diet
+
+% Diabetes diet recommendations
+diet(diabetes, "Low carbohydrate, high fiber, moderate protein diet, avoid sugar").
+
+% Hypertension diet recommendations
+diet(hypertension, "Low sodium, rich in potassium and magnesium, DASH diet").
+
+% Heart disease diet recommendations
+diet(heart_disease, "Low saturated fat, high in omega-3 fatty acids, lots of fruits and vegetables").
+
+% Obesity diet recommendations
+diet(obesity, "Calorie-controlled, high fiber, low-fat diet with plenty of fruits and vegetables").
+
+% High cholesterol diet recommendations
+diet(high_cholesterol, "Low saturated fat, rich in soluble fiber, healthy fats like omega-3").
+
+% Anemia diet recommendations
+diet(anemia, "Iron-rich foods, vitamin B12, folic acid, and vitamin C to increase iron absorption").
+
+% Constipation diet recommendations
+diet(constipation, "High fiber, plenty of fluids, avoid processed foods").
+
+% Gastroesophageal reflux disease (GERD) diet recommendations
+diet(gerd, "Low-fat, avoid spicy foods, avoid citrus, eat small frequent meals").
+
+% Kidney disease diet recommendations
+diet(kidney_disease, "Low sodium, potassium, and phosphorus, control protein intake").
+
+% Cancer diet recommendations
+diet(cancer, "High in fruits, vegetables, lean protein, healthy fats, and whole grains").
+
+% Rules: Suggest Diet based on Disease
+suggest_diet(Disease, Diet) :-
+    diet(Disease, Diet).
+
+% Example Queries:
+% ?- suggest_diet(diabetes, Diet).          % Suggest diet for diabetes
+% ?- suggest_diet(hypertension, Diet).      % Suggest diet for hypertension
+% ?- suggest_diet(anemia, Diet).            % Suggest diet for anemia

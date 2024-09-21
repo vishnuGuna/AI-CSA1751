@@ -1,0 +1,19 @@
+% Facts: bird(Bird) defines that the given Bird is a type of bird.
+bird(sparrow).
+bird(penguin).
+bird(ostrich).
+bird(eagle).
+bird(parrot).
+% Facts: flightless(Bird) defines birds that cannot fly.
+flightless(penguin).
+flightless(ostrich).
+% Rule to determine if a bird can fly
+can_fly(Bird) :-
+    bird(Bird),
+    \+ flightless(Bird),
+    write(Bird), write(' can fly.'), nl.
+% Rule to determine if a bird cannot fly
+can_fly(Bird) :-
+    bird(Bird),
+    flightless(Bird),
+    write(Bird), write(' cannot fly.'), nl.
